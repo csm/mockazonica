@@ -27,3 +27,11 @@
             (println "could not mock out" (str ns ":") t))))
 
       (persistent! @old-vals))))
+
+(defn restore-functions!
+  "Restore all functions given in VALS (the return value from mock-amazonica!)."
+  [vals]
+  (when (compare-and-set! mocked? true false)
+    (doseq [[sym value] vals]
+      (if-let [v (find-var sym)]
+        (alter-var-root v (constantly value))))))
