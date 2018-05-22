@@ -24,7 +24,7 @@
               (vswap! old-vals (fn [v] (assoc! v sym (var-get value))))
               (alter-var-root value (constantly (or (get redefs sym) (default-fn sym))))))
           (catch Throwable t
-            (println "could not mock out" (str ns ":") t))))
+            (println "could not mock out" (str ns ":") (.getMessage t)))))
 
       (persistent! @old-vals))))
 
