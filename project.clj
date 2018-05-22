@@ -1,4 +1,4 @@
-(defproject locoroll/mockazonica "0.1.0"
+(defproject locoroll/mockazonica "0.1.1-SNAPSHOT"
   :description "Tool for mocking out amazonica"
   :url "https://github.com/csm/mockazonica"
   :license {:name "Eclipse Public License"
