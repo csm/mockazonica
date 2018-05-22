@@ -9,7 +9,7 @@ The overall intent is to add mocked versions of functions in your tests, while a
 ## Usage
 
 ```clojure
-[locoroll/mockazonica "0.1.1"]
+[locoroll/mockazonica "0.1.2"]
 ```
 
 To replace only `amazonica.aws.s3/put-object` and `amazonica.aws.s3/get-object` with your versions, and stub out all other amazonica functions with a version that constantly throws a `java.lang.Error`.
