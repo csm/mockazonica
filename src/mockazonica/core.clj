@@ -10,8 +10,12 @@
   function being called) and which returns a function that accepts (and possibly ignores)
   any number of arguments.
 
+  ERROR-FN can be set to a function that accepts the failed namespace and the throwable
+  cause. The default ERROR-FN does nothing.
+
   Returns a map of symbol->previous function."
-  [& {:keys [redefs default-fn] :or {default-fn (fn [sym] (fn default-mock [& _] (throw (Error. (str "amazonica function " sym " called but not mocked out")))))}}]
+  [& {:keys [redefs default-fn error-fn] :or {default-fn (fn [sym] (fn default-mock [& _] (throw (Error. (str "amazonica function " sym " called but not mocked out")))))
+                                              error-fn (fn [_ _])}}]
   (when (compare-and-set! mocked? false true)
     (let [classpath (cp/classpath)
           nses (filter #(.startsWith (name %) "amazonica.aws") (ns-find/find-namespaces classpath))
@@ -24,7 +28,7 @@
               (vswap! old-vals (fn [v] (assoc! v sym (var-get value))))
               (alter-var-root value (constantly (or (get redefs sym) (default-fn sym))))))
           (catch Throwable t
-            (println "could not mock out" (str ns ":") (.getMessage t)))))
+            (error-fn ns t))))
 
       (persistent! @old-vals))))
 
